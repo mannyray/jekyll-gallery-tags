@@ -1,0 +1,32 @@
+{
+	"colour_coding":[
+		{
+			"start_word":"code",
+			"colour":"yellow"
+		},
+		{
+			"start_word":"text",
+			"colour":"purple"
+		},
+		{
+			"start_word":"img",
+			"colour":"green"
+		},
+		{
+			"start_word":"tag",
+			"colour":"blue"
+		},
+		{
+			"start_word":"good",
+			"colour":"pink"
+		},
+		{
+			"start_word":"unknown",
+			"colour":"brown"
+		},
+		{
+			"start_word":"message",
+			"colour":"teal"
+		}
+	]
+}
