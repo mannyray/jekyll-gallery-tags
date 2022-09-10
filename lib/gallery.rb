@@ -1,5 +1,6 @@
 require 'mini_magick'
 require 'fileutils'
+require "json"
 
 
   
@@ -22,6 +23,7 @@ require 'fileutils'
             next
           end
           gallery_path = gallery_dir
+          
 	  Dir.glob gallery_dir+'/*' do |img_dir|#TODO only JPGs...
             if not img_dir.end_with?("jpg") and not img_dir.end_with?("JPG") and not img_dir.end_with?("png")
                next
@@ -55,38 +57,12 @@ require 'fileutils'
         photo_dir = config["dir"]
         
         Dir.glob photo_dir+'/*' do |gallery_dir|
-          print(gallery_dir+"\n")
-          
           gallery_path = gallery_dir
           site.pages << GalleryPage2.new(site, photo_dir, gallery_dir.split('/').last, gallery_path)
         end
         
       end
     end
-
-
-#    class GalleryPage < Jekyll::Page
-#      def initialize(site, category, posts)
-
-#        @site = site             # the current site instance.
-#        @base = site.source      # path to the source directory.
-#        @dir  = category         # the directory the page will reside in.
-
-#        @basename = 'allposts'      
-#        @ext      = '.html'   
-#        @name     = 'index.html'
-        
-#        self.content = File.read( File.join(@base.to_s, "_plugins/index.html") )
-
-#      	self.data = {
-#	'layout' => 'default',
-#	'title' => "Title",
-#	'posts' => posts
-#     	}
-     	
-#      end
-#    end
-    
     
     
     class GalleryPage2 < Jekyll::Page
@@ -100,10 +76,29 @@ require 'fileutils'
         @ext      = '.html'   
         @name     = 'index2.html' 
         
+        @image_blocks = []
+        @thumbnail_blocks = []
+        @date_block = []
+        
         @images = []
         @thumbnails = []
         
-        Dir.foreach(gallery_path) do |img_dir|#TODO only JPGs...
+        allJson = []
+        #load up all the image data and sort it
+        Dir.glob gallery_path+'/thumbnail_info/*' do |info_file|
+           file = File.open info_file
+	   data = JSON.load file
+	   allJson.push(data[0])
+        end
+        allJson.sort_by! { |a| [-a ['year'].to_i, -a['month'].to_i ]  }
+        
+        current_date = ''
+        last_date = ''
+        current_block = []
+        current_thumbnail_block = []
+        allJson.each{ |item|
+          
+          img_dir = item['name']# |img_dir|#TODO only JPGs...
           if img_dir == '.' || img_dir == '..'
              next          
           end
@@ -112,10 +107,31 @@ require 'fileutils'
           if name.length() != 2
             next
           end
-          
           @images.push(File.join(gallery_path,name[0]).to_s)
           @thumbnails.push(File.join("thumbnails",gallery_path,name[0]+"_reduced."+name[1]).to_s)
-        end
+          
+          last_date = (item['year']+'-'+item['month'])
+          
+          if(current_date === '')
+             current_date = last_date
+             @date_block.push(current_date)#off by one situation here
+          end
+          if( not ( last_date === current_date ) )
+             @image_blocks.push(current_block)
+             @thumbnail_blocks.push(current_thumbnail_block)
+             @date_block.push(current_date)
+             current_date = last_date
+             current_block = []
+             current_thumbnail_block = []
+          end
+          current_block.push(File.join(gallery_path,name[0]).to_s)
+          #TODO: the path name should be decided on if it is or is not "_reduced" format
+          current_thumbnail_block.push(File.join("thumbnails",gallery_path,name[0]+"_reduced."+name[1]).to_s) 
+        }
+        
+        @image_blocks.push(current_block)
+        @thumbnail_blocks.push(current_thumbnail_block)
+        @date_block.push(current_date)
 
         self.content = File.read( File.join(@base.to_s, "_plugins/index2.html") )
 	
@@ -123,7 +139,9 @@ require 'fileutils'
 	 'layout' => 'default',
 	 'title' => "Title",
 	 'images' => @images,
-	 'thumbnails' => @thumbnails
+	 'thumbnails' => @thumbnails,
+	 'image_blocks' => @image_blocks,
+	 'date_block' => @date_block
      	}
      	
       end

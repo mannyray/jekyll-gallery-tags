@@ -69,7 +69,6 @@ export default class Tag extends Component {
 	getImageInfo(){
 		var selected_image = [];
 		selected_image = this.state.images[this.state.index];
-		fetch(this.state.url_backend+'/get_image_info?image='+selected_image+'&path='+this.state.save_directory).then(res => res.json()).then(res => this.getImageInfoHandler(res));
 		this.setState({image_viewed:selected_image});
 	}
 	
@@ -113,6 +112,7 @@ export default class Tag extends Component {
 	
 	onImgLoad({target:img}) {
 		this.setState({imageHeight:img.offsetHeight,imageWidth:img.offsetWidth})
+		fetch(this.state.url_backend+'/get_image_info?image='+this.state.image_viewed+'&path='+this.state.save_directory).then(res => res.json()).then(res => this.getImageInfoHandler(res));
 	}
 	
 	saveImageThumbnailInformation(){
@@ -120,7 +120,17 @@ export default class Tag extends Component {
 		const image_dimensions='&image_height='+this.state.imageHeight+'&image_width='+this.state.imageWidth
 		const image_info = '&path='+this.state.save_directory+'&image='+this.state.image_viewed
 		const thumbnail_deets = "&thumbnail="+this.state.crop.x+"_"+this.state.crop.y+"_"+Math.floor(this.state.crop.width)
-		//this.state.index = this.state.index + 1;
+		
+		//validate information
+		if(this.state.year === ""){
+			alert("Year must be selected.")
+			return
+		}
+		if(this.state.month === ""){
+			alert("Month must be selected.")
+			return
+		}
+		
 		fetch(this.state.url_backend+'/save_image_info?year='+this.state.year+"&month="+this.state.month+thumbnail_deets+image_info+image_dimensions+caption_info, {method: 'POST'} ).then( res => res.json()).then(this.goToRightImage());
 	}
 	
@@ -158,21 +168,20 @@ export default class Tag extends Component {
 				<div>
 					<div >
 						<h2>Navigation</h2>
-						<br/>
 						<input type="text"  value={this.state.textBoxValue}  onKeyPress={(e) => this.handler(e)}  autofocus="autofocus" />
 						
 					</div>
 				</div>
 				<div>
 					<div >
-						<h2>Enter Image message:</h2>
-						<br/>
+						<h2>Enter Image caption:</h2>
 						<textarea value={this.state.caption}  onChange={this.handleChangeCaption} id="image_caption" name="image_caption" rows="4" cols="50"></textarea>
 					</div>
 				</div>
 				<div>
 					<label for="year">Choose a year:</label>
 					<select name="year" value={this.state.year} id="year" onChange={this.handleChangeYear}>
+						<option value=""></option>
 						<option value="2010">2010</option>
 						<option value="2011">2011</option>
 						<option value="2012">2012</option>
@@ -191,6 +200,7 @@ export default class Tag extends Component {
 
 					<label for="month">Choose a month:</label>
 					<select name="month" value={this.state.month}  id="month" onChange={this.handleChangeMonth}>
+						<option value=""></option>
 						<option value="1">January</option>
 						<option value="2">February</option>
 						<option value="3">March</option>

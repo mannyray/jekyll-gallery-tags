@@ -33,7 +33,7 @@ def save_image_info():
     image_name = request.args.get('image',default='',type=str)
     image_path = os.path.join(path,image_name)
     thumbnail_path = os.path.join(path,'thumbnail')
-    #data_thumbnail_path = store.get_json_file_path(path,image_name)
+    thumbnail_info_path = os.path.join(path,'thumbnail_info')
     
     year = request.args.get('year',default='',type=str)
     month = request.args.get('month',default='',type=str)
@@ -44,6 +44,8 @@ def save_image_info():
     	return jsonify(['failed'])
     if not os.path.exists(thumbnail_path):
     	os.makedirs(thumbnail_path)
+    if not os.path.exists(thumbnail_info_path):
+    	os.makedirs(thumbnail_info_path)
 
     #with FileLock(data_thumbnail_path):
     if True:

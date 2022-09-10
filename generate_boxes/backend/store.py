@@ -25,7 +25,7 @@ folderToDictionary = {}
 tagToImages = {}
 
 def get_json_file_path(image_folder_path,image_name):
-    return os.path.join(image_folder_path,image_name+'data.json')
+    return os.path.join(image_folder_path,"thumbnail_info",image_name+'data.json')
 
 def get_image(current_session_path,image_name):
     return send_file(os.path.join(current_session_path,image_name), mimetype='image/jpg')
