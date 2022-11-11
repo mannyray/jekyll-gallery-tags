@@ -1,6 +1,7 @@
 require 'mini_magick'
 require 'fileutils'
 require "json"
+require 'yaml'
 
 
   
@@ -66,6 +67,13 @@ require "json"
     
     
     class GalleryPage2 < Jekyll::Page
+    
+      def get_month(month_index)
+      	#months = ["January", "February", "March", "April", "May", "June", "July","August", "September", "October", "November", "December"]
+      	#return months[month_index.to_i-1]#TODO fix so that it is int by default
+      	return month_index
+      end
+    
       def initialize(site, photo_dir, tag_name, gallery_path)
 
         @site = site             # the current site instance.
@@ -85,11 +93,12 @@ require "json"
         
         allJson = []
         #load up all the image data and sort it
-        Dir.glob gallery_path+'/thumbnail_info/*' do |info_file|
-           file = File.open info_file
-	   data = JSON.load file
-	   allJson.push(data[0])
+         
+        Dir.glob gallery_path+'/result.yml' do |info_file2|
+           print info_file2
+           allJson = YAML.load_file(info_file2)
         end
+        
         allJson.sort_by! { |a| [-a ['year'].to_i, -a['month'].to_i ]  }
         
         current_date = ''
@@ -110,7 +119,7 @@ require "json"
           @images.push(File.join(gallery_path,name[0]).to_s)
           @thumbnails.push(File.join("thumbnails",gallery_path,name[0]+"_reduced."+name[1]).to_s)
           
-          last_date = (item['year']+'-'+item['month'])
+          last_date = (item['year']+'-'+get_month(item['month']))
           
           if(current_date === '')
              current_date = last_date
