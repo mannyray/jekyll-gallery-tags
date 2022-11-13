@@ -24,18 +24,19 @@ module GalleryTag
 			photo_dir = config["dir"]
 			tags = config["galleries"]
 
-			cover_photos = {}
+			cover_info = {}
 			tags.each{ |tag|
-			cover_photos[tag] = GalleryTag::getTagImageInfo(photo_dir, tag)['cover']
-			site.pages << GalleryPage.new(site, photo_dir, tag)
+				galleryInformation = GalleryTag::getTagImageInfo(photo_dir, tag)
+				cover_info[tag] = {'gallery_thumbnail'=>galleryInformation['cover'],'gallery_title'=>galleryInformation['name']}
+				site.pages << GalleryPage.new(site, photo_dir, tag, galleryInformation)
 			}
-			site.pages << GalleryHomePage.new(site, photo_dir,tags, cover_photos)
+			site.pages << GalleryHomePage.new(site, photo_dir,tags, cover_info)
 		end
 	end
 
 	# home page that lists all tag pages
 	class GalleryHomePage < Jekyll::Page
-		def initialize(site, photo_dir, tag_list, cover_photos)
+		def initialize(site, photo_dir, tag_list, cover_info)
 			@site = site
 			@base = site.source
 			@dir  = photo_dir          
@@ -45,7 +46,7 @@ module GalleryTag
 			@name     = 'home.html'
 
 			@tags = tag_list
-			@cover_photos = cover_photos
+			@cover_info = cover_info
 
 			self.content = File.read( File.join(@base.to_s, "_plugins/home.html") )
 
@@ -54,7 +55,7 @@ module GalleryTag
 				'title' => "Photos",
 				'photo_dir' => photo_dir,
 				'tags' => @tags,
-				'cover_photos' => @cover_photos
+				'cover_info' => @cover_info
 			}
 			end
 	end
@@ -62,7 +63,7 @@ module GalleryTag
 	# a single tag page
 	class GalleryPage < Jekyll::Page
 
-	def initialize(site, photo_dir, tag_name)
+	def initialize(site, photo_dir, tag_name, galleryInformation)
 
 		@site = site            
 		@base = site.source    
@@ -80,9 +81,9 @@ module GalleryTag
 
 		@exclude = true
 
-		data = GalleryTag::getTagImageInfo(photo_dir,tag_name)
-		image_data = data['images']
-		summary = data['summary']
+		image_data = galleryInformation['images']
+		summary = galleryInformation['summary']
+		gallery_name = galleryInformation['name']
 
 		current_date = ''
 		last_date = ''
@@ -110,7 +111,7 @@ module GalleryTag
 		self.content = File.read( File.join(@base.to_s, "_plugins/tag.html") )
 		self.data = {
 			'layout' => 'default',
-			'title' => tag_name.capitalize(),
+			'title' => gallery_name,
 			'image_blocks' => @image_blocks,
 			'date_block' => @date_block,
 			'site_summary' => summary,

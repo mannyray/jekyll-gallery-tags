@@ -48,8 +48,8 @@
 {% for tag in page.tags %}
 	<div class="gallery-image-wrapper">
 		<a href="{{tag}}">
-			<img id="thumbnail{{image_pair['image']}}" class="gallery-image" alt="{{tag}}"  src={{tag}}/{{page.cover_photos[tag]}}></img>
-			<div class="centered">{{tag}}</div>
+			<img id="thumbnail{{image_pair['image']}}" class="gallery-image" alt="{{tag}}"  src={{tag}}/{{page.cover_info[tag]['gallery_thumbnail']}}></img>
+			<div class="centered">{{page.cover_info[tag]['gallery_title']}}</div>
 		</a>
 	</div>
 {% endfor %}

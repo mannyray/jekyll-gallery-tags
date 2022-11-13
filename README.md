@@ -68,6 +68,7 @@ The root of your Jekyll site will have a `<photos>` folder which will store all 
 ```
 cover: thumbnail/image_1_thumb.jpg
 summary: These pictures were taken in 2018 during my vacation
+name: "Vacation to France"
 images:
 - caption: 'This is the caption'
   month: '7'
@@ -83,7 +84,8 @@ images:
 
 The `thumbnail` subfolder is not necessary but a clean way to separate your square thumbnails and images (you could keep your thumbnails in `<tag>`). The `result.yml` (required name) has three entries: 
  - `cover`: is the relative path to the thumbnail that will represent your tag in the homepage
- - `summary`: is the brief description of the uniting theme of the images
+ - `name` : The name of the photo gallery.
+ - `summary`: is the brief description of the uniting theme of the images (optional)
  - `images`: is an array where each entry has
    - `caption`: the caption of the image
    - `thumbnail`: the relative path to the thumbnail. There is no requirement to have the image named in a specific way or put in a specific folder (as long as it is within `<tag>`).
@@ -211,7 +213,8 @@ for FILE in *; do convert $FILE -define jpeg:extent=200kb $FILE; done
 ## Future Work:
 
  - Add multiple images under a single thumbnail. This would be well suited for recipes.
- - Potentially add some sort of pagination or dynamic loading so that we don't have to load all image thumbnails at once. 
+ - Potentially add some sort of pagination or dynamic loading so that we don't have to load all image thumbnails at once.
+ - What if user provides no thumbnail -> take middle?
 
 ## Additional reading on how to create a plugin
  - https://michaelcurrin.github.io/code-cookbook/recipes/jekyll/plugins/generators.html
