@@ -132,9 +132,9 @@ Now you have a backend and front end (respectively) running to produce a web app
 
 After pressing `upload`, you will be redirected to a page where you can click and drag to make the square thumbnail (right image is the preview of the square thumbnail), add a caption and date.
 
-![](assets/Peek 2022-11-12 21-05.gif)
+![](assets/gif_editor.gif)
 
-You can go through every picture in `/full/path/to/folder` and process each picture. This will create a folders `thumbnail` and `thumbnail_info` within `/full/path/to/folder` with the former containing thumbnails and the latter containing other information stored in json format.
+You can go through every picture in `/full/path/to/folder` and process each picture. This will create a folders `thumbnail` and `thumbnail_info` within `/full/path/to/folder` with the former containing thumbnails and the latter containing other information stored in json format. (You can use the navigation input with letters `n` or `b` to go forward or backward and `=` to wipe the navigation input bar.)
 
 Once you are done, open a third terminal window and run:
 ```
@@ -174,7 +174,7 @@ cd test_site
 jekyll serve --trace; cd -
 ```
 
-which will generate the site. In addition, I have made a small modification to the default site to exclude the tag pages from the header navigation bar (based on [here](https://mycyberuniverse.com/exclude-pages-from-navigation-menu-in-jekyll.html)). I have created an additional folder within `test_sites` called `_includes/` and added the file `header.html` explicitly from which the minima site used here draws its theme. Within `header.html`, I have replaced 
+which will generate the site. In addition, I have made a small modification to the default site to exclude the tag pages from the header navigation bar (based on [this](https://mycyberuniverse.com/exclude-pages-from-navigation-menu-in-jekyll.html)). I have created an additional folder within `test_sites` called `_includes/` and added the file `header.html` explicitly from which the minima site used here draws its theme. Within `header.html`, I have replaced 
 
 ```
 <a class="page-link" href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a>
