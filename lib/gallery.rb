@@ -113,7 +113,8 @@ module GalleryTag
 			'title' => tag_name.capitalize(),
 			'image_blocks' => @image_blocks,
 			'date_block' => @date_block,
-			'site_summary' => summary
+			'site_summary' => summary,
+			'exclude' => @exclude
 		}
 		end
 	end

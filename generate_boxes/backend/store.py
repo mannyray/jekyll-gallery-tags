@@ -7,20 +7,6 @@ from flask import send_file
 import json
 
 
-'''
-[
-   ...
-   {
-      "name":"IMG_123.JPG",
-      "caption":"some text bla bla",
-      "year":"2020",
-      "month":"7"
-   }  
-   ...
-]
-'''
-
-
 folderToDictionary = {}
 tagToImages = {}
 
