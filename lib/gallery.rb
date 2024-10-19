@@ -4,6 +4,7 @@ require 'yaml'
 
 # module for generating a photo gallery
 module GalleryTag
+
 	def self.getTagImageInfo(photo_dir, tag_name)
 		tagGalleryData = YAML.load_file(photo_dir + "/" + tag_name+'/result.yml' )
 		array_of_images = tagGalleryData['images']
@@ -48,7 +49,7 @@ module GalleryTag
 			@tags = tag_list
 			@cover_info = cover_info
 
-			self.content = File.read( File.join(@base.to_s, "_plugins/home.html") )
+            self.content = File.read( File.join(site.config.fetch('plugins_dir'),"home.html" ))
 
 			self.data = {
 				'layout' => 'default',
@@ -108,7 +109,7 @@ module GalleryTag
 		@image_blocks.push(current_block)
 		@date_block.push(current_date)
 
-		self.content = File.read( File.join(@base.to_s, "_plugins/tag.html") )
+        self.content = File.read( File.join(site.config.fetch('plugins_dir'),"tag.html" ))
 		self.data = {
 			'layout' => 'default',
 			'title' => gallery_name,

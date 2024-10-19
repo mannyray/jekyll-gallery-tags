@@ -62,3 +62,6 @@ gallerytags:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+
+plugins_dir: ./../lib
