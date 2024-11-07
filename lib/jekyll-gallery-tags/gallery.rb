@@ -49,7 +49,7 @@ module GalleryTag
 			@tags = tag_list
 			@cover_info = cover_info
 
-            self.content = File.read( File.join(site.config.fetch('plugins_dir'),"home.html" ))
+            self.content = File.read( File.join(site.config.fetch('plugins_dir'),"jekyll-gallery-tags","home.html" ))
 
 			self.data = {
 				'layout' => 'default',
@@ -109,7 +109,7 @@ module GalleryTag
 		@image_blocks.push(current_block)
 		@date_block.push(current_date)
 
-        self.content = File.read( File.join(site.config.fetch('plugins_dir'),"tag.html" ))
+        self.content = File.read( File.join(site.config.fetch('plugins_dir'),"jekyll-gallery-tags","tag.html" ))
 		self.data = {
 			'layout' => 'default',
 			'title' => gallery_name,
