@@ -1,7 +1,7 @@
 # jekyll-gallery-tags
 
 > [!NOTE]
-> Head to [jekyll-gallery-tags.szonov.com](https://jekyll-gallery-tags.szonov.com) to see a live demo of this plugin!
+> Head to [jekyll-gallery-tags.szonov.com/photos/](https://jekyll-gallery-tags.szonov.com/photos/) to see a live demo of this plugin!
 
 This repository hosts the code for a photo gallery addition to [Jekyll based sites](https://jekyllrb.com/). It is assumed the user is familiar with Jekyll site generation as it can be quite involved. It is recommended user has basic knowledge of the Jekyll sites, installing required packages, terminals and (_of course_) patience to do some minor debugging as a result of the user's computer environment being different from my development environment. The code here was tested and developed on a Ubuntu machine.
 
